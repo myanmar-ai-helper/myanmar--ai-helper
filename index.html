@@ -2,7 +2,12 @@
 <html lang="my">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
   <title>Myanmar AI Helper</title>
 
   <style>
@@ -12,139 +17,127 @@
 
     body {
       margin: 0;
+      min-height: 100vh;
       font-family: Arial, sans-serif;
-      background: #f3f6fb;
-      color: #222;
+      background: #f4f7fb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
     }
 
-    header {
-      background: linear-gradient(135deg, #0066ff, #00a8ff);
-      color: white;
-      text-align: center;
-      padding: 45px 20px;
-    }
-
-    .logo {
-      font-size: 50px;
-    }
-
-    header h1 {
-      margin: 10px 0;
-      font-size: 32px;
-    }
-
-    header p {
-      margin: 0;
-      font-size: 17px;
-    }
-
-    .container {
-      max-width: 850px;
-      margin: 35px auto;
-      padding: 0 20px;
-    }
-
-    .card {
+    .app {
+      width: 100%;
+      max-width: 800px;
       background: white;
-      border-radius: 18px;
+      border-radius: 20px;
       padding: 25px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
     }
 
-    .title {
-      font-size: 22px;
-      font-weight: bold;
-      margin-bottom: 15px;
+    h1 {
+      margin: 0 0 20px;
+      font-size: 28px;
+      color: #222;
     }
 
     textarea {
       width: 100%;
       min-height: 150px;
-      padding: 16px;
-      border: 2px solid #e1e6ef;
-      border-radius: 12px;
       resize: vertical;
-      font-size: 16px;
+      border: 1px solid #d8dce5;
+      border-radius: 14px;
+      padding: 16px;
+      font-size: 17px;
       outline: none;
     }
 
     textarea:focus {
-      border-color: #008cff;
+      border-color: #1689e8;
     }
 
     .buttons {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      display: flex;
       gap: 10px;
-      margin-top: 15px;
+      margin-top: 12px;
+      flex-wrap: wrap;
     }
 
     button {
-      border: none;
-      border-radius: 10px;
-      padding: 13px;
-      font-size: 15px;
+      border: 0;
+      border-radius: 12px;
+      padding: 13px 20px;
+      font-size: 16px;
       cursor: pointer;
-      background: #087cff;
+    }
+
+    #sendBtn {
+      background: #1689e8;
+      color: white;
+      flex: 1;
+    }
+
+    #exampleBtn {
+      background: #1689e8;
       color: white;
     }
 
-    button:hover {
-      opacity: 0.9;
+    #clearBtn {
+      background: #333;
+      color: white;
     }
 
-    .clear {
-      background: #777;
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
-    .result {
-      margin-top: 20px;
-      padding: 18px;
-      background: #f1f7ff;
-      border-radius: 12px;
-      min-height: 80px;
-      line-height: 1.7;
-      white-space: pre-wrap;
-    }
-
-    .tools {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-      margin-top: 25px;
-    }
-
-    .tool {
-      background: white;
+    .response {
+      margin-top: 22px;
+      background: #f7f9fc;
+      border-radius: 15px;
       padding: 20px;
-      border-radius: 14px;
-      text-align: center;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.06);
-      cursor: pointer;
+      min-height: 100px;
     }
 
-    .tool:hover {
-      transform: translateY(-2px);
+    .response h2 {
+      margin-top: 0;
+      font-size: 20px;
     }
 
-    .tool-icon {
-      font-size: 30px;
+    #answer {
+      white-space: pre-wrap;
+      line-height: 1.7;
+      font-size: 16px;
     }
 
-    footer {
-      text-align: center;
-      padding: 30px;
+    .loading {
       color: #777;
     }
 
+    .error {
+      color: #c62828;
+    }
+
     @media (max-width: 600px) {
-      .buttons,
-      .tools {
-        grid-template-columns: 1fr;
+      body {
+        padding: 10px;
       }
 
-      header h1 {
-        font-size: 26px;
+      .app {
+        padding: 18px;
+      }
+
+      h1 {
+        font-size: 23px;
+      }
+
+      .buttons {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
       }
     }
   </style>
@@ -152,97 +145,180 @@
 
 <body>
 
-  <header>
-    <div class="logo">🤖</div>
-    <h1>Myanmar AI Helper</h1>
-    <p>မြန်မာလူမျိုးတွေအတွက် အသုံးဝင်တဲ့ AI Tools</p>
-  </header>
+  <div class="app">
 
-  <div class="container">
+    <h1>✨ AI Helper</h1>
 
-    <div class="card">
+    <textarea
+      id="message"
+      placeholder="မေးချင်တာကို ဒီမှာရေးပါ..."
+    ></textarea>
 
-      <div class="title">✨ AI Helper</div>
+    <div class="buttons">
 
-      <textarea id="input"
-        placeholder="ဥပမာ - Facebook post တစ်ခုရေးပေးပါ"></textarea>
+      <button id="sendBtn">
+        ✨ AI ဖြေမယ်
+      </button>
 
-      <div class="buttons">
-        <button onclick="generate()">✨ AI ဖြင့်လုပ်မယ်</button>
-        <button onclick="example()">💡 Example</button>
-        <button class="clear" onclick="clearText()">🗑️ ရှင်းမယ်</button>
-      </div>
+      <button id="exampleBtn">
+        💡 Example
+      </button>
 
-      <div class="result" id="result">
-        ဒီနေရာမှာ AI ရလဒ်ပေါ်လာပါမယ်။
-      </div>
+      <button id="clearBtn">
+        🗑️ ရှင်းမယ်
+      </button>
 
     </div>
 
-    <div class="tools">
+    <div class="response">
 
-      <div class="tool" onclick="setTool('Facebook Post ရေးပေးပါ')">
-        <div class="tool-icon">📱</div>
-        <b>Facebook Post</b>
-        <p>Post ရေးပေးမယ်</p>
-      </div>
+      <h2>🤖 AI Response</h2>
 
-      <div class="tool" onclick="setTool('ကြော်ငြာစာရေးပေးပါ')">
-        <div class="tool-icon">📢</div>
-        <b>ကြော်ငြာစာ</b>
-        <p>Marketing စာရေးပေးမယ်</p>
-      </div>
-
-      <div class="tool" onclick="setTool('စာကို မြန်မာလို ပြန်ရေးပေးပါ')">
-        <div class="tool-icon">✍️</div>
-        <b>စာရေးကူ</b>
-        <p>စာရေးရာမှာ ကူညီပေးမယ်</p>
+      <div id="answer">
+        AI ကို မေးလိုက်ပါ။
       </div>
 
     </div>
 
   </div>
 
-  <footer>
-    © 2026 Myanmar AI Helper
-  </footer>
-
   <script>
+    const messageInput =
+      document.getElementById("message");
 
-    function generate() {
-      const input = document.getElementById("input").value.trim();
-      const result = document.getElementById("result");
+    const sendBtn =
+      document.getElementById("sendBtn");
 
-      if (!input) {
-        result.innerText = "⚠️ အရင်ဆုံး မေးချင်တာကို ရေးပါ။";
+    const exampleBtn =
+      document.getElementById("exampleBtn");
+
+    const clearBtn =
+      document.getElementById("clearBtn");
+
+    const answer =
+      document.getElementById("answer");
+
+
+    async function sendMessage() {
+
+      const message =
+        messageInput.value.trim();
+
+      if (!message) {
+        answer.textContent =
+          "မေးချင်တာကို အရင်ရေးပါ။";
         return;
       }
 
-      result.innerText =
-        "🤖 Demo AI Response\n\n" +
-        "သင်ရေးထားတာ - " + input +
-        "\n\n" +
-        "ဒီနေရာက Demo ဖြစ်ပါတယ်။ " +
-        "နောက်အဆင့်မှာ တကယ့် AI API နဲ့ ချိတ်ပြီး " +
-        "မေးသမျှကို တကယ်ဖြေနိုင်အောင် ပြုလုပ်မယ်။";
+      sendBtn.disabled = true;
+
+      answer.className = "loading";
+      answer.textContent =
+        "AI စဉ်းစားနေပါတယ်...";
+
+
+      try {
+
+        const response = await fetch(
+          "/api/chat",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+              message: message
+            })
+          }
+        );
+
+
+        const data =
+          await response.json();
+
+
+        if (!response.ok) {
+          throw new Error(
+            data.error ||
+            "AI request failed"
+          );
+        }
+
+
+        answer.className = "";
+        answer.textContent =
+          data.reply || "အဖြေမရပါ။";
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        answer.className = "error";
+
+        answer.textContent =
+          "Error: " + error.message;
+
+      } finally {
+
+        sendBtn.disabled = false;
+
+      }
     }
 
-    function example() {
-      document.getElementById("input").value =
-        "Online shop အတွက် Facebook post တစ်ခု ရေးပေးပါ";
-    }
 
-    function clearText() {
-      document.getElementById("input").value = "";
-      document.getElementById("result").innerText =
-        "ဒီနေရာမှာ AI ရလဒ်ပေါ်လာပါမယ်။";
-    }
+    sendBtn.addEventListener(
+      "click",
+      sendMessage
+    );
 
-    function setTool(text) {
-      document.getElementById("input").value = text;
-      document.getElementById("input").focus();
-    }
 
+    messageInput.addEventListener(
+      "keydown",
+      function(event) {
+
+        if (
+          event.key === "Enter" &&
+          !event.shiftKey
+        ) {
+          event.preventDefault();
+          sendMessage();
+        }
+
+      }
+    );
+
+
+    exampleBtn.addEventListener(
+      "click",
+      function() {
+
+        messageInput.value =
+          "မြန်မာနိုင်ငံအကြောင်း စိတ်ဝင်စားစရာ အချက် ၅ ချက် ပြောပြပါ။";
+
+        messageInput.focus();
+
+      }
+    );
+
+
+    clearBtn.addEventListener(
+      "click",
+      function() {
+
+        messageInput.value = "";
+
+        answer.className = "";
+
+        answer.textContent =
+          "AI ကို မေးလိုက်ပါ။";
+
+        messageInput.focus();
+
+      }
+    );
   </script>
 
 </body>
