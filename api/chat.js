@@ -1,13 +1,7 @@
-import OpenAI from "openai";
-
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({
-      error: "Method not allowed",
+      error: "Method not allowed"
     });
   }
 
@@ -16,30 +10,58 @@ export default async function handler(req, res) {
 
     if (!message || !message.trim()) {
       return res.status(400).json({
-        error: "Message is required",
+        error: "Message is required"
       });
     }
 
-    const response = await client.responses.create({
-      model: "gpt-5.6",
-      instructions:
-        "You are Myanmar AI Helper. " +
-        "Answer clearly, naturally, and helpfully. " +
-        "If the user writes Burmese, answer in Burmese. " +
-        "If the user writes English, answer in English. " +
-        "Be friendly and concise.",
-      input: message.trim(),
-    });
+    const apiKey = process.env.OPENAI_API_KEY;
+
+    if (!apiKey) {
+      return res.status(500).json({
+        error: "OPENAI_API_KEY is not configured"
+      });
+    }
+
+    const response = await fetch(
+      "https://api.openai.com/v1/responses",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: "gpt-5.6",
+          instructions:
+            "You are Myanmar AI Helper. " +
+            "Answer clearly and helpfully. " +
+            "If the user writes Burmese, answer in Burmese. " +
+            "If the user writes English, answer in English. " +
+            "Be friendly and easy to understand.",
+          input: message.trim()
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error(data);
+
+      return res.status(response.status).json({
+        error: data?.error?.message || "OpenAI request failed"
+      });
+    }
 
     return res.status(200).json({
-      reply: response.output_text,
+      reply: data.output_text || "No response received."
     });
+
   } catch (error) {
     console.error(error);
 
     return res.status(500).json({
-      error: "AI request failed",
+      error: "Server error"
     });
   }
 }
-```0
