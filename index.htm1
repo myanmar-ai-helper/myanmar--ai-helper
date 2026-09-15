@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Myanmar AI Helper</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f5f7fb;
+      color: #222;
+    }
+
+    .header {
+      background: #6c5ce7;
+      color: white;
+      padding: 25px 20px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    .header p {
+      margin: 0;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 30px auto;
+      padding: 0 18px;
+    }
+
+    .card {
+      background: white;
+      padding: 22px;
+      border-radius: 16px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      resize: vertical;
+      font-size: 16px;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: #6c5ce7;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 15px;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: #6c5ce7;
+      color: white;
+      font-size: 17px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 18px;
+      background: #f0edff;
+      border-radius: 12px;
+      min-height: 80px;
+      line-height: 1.7;
+    }
+
+    .tools {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .tool {
+      background: #fafafa;
+      border: 1px solid #eee;
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .tool:hover {
+      background: #f0edff;
+    }
+
+    @media (max-width: 500px) {
+      .tools {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <h1>🤖 Myanmar AI Helper</h1>
+    <p>မြန်မာလို အလုပ်တွေကို လွယ်လွယ်ကူကူ ကူညီပေးမယ့် AI</p>
+  </div>
+
+  <div class="container">
+
+    <div class="card">
+
+      <h2>AI Helper</h2>
+
+      <textarea id="message"
+        placeholder="ဘာလုပ်ပေးရမလဲ? ဥပမာ - Facebook post တစ်ခုရေးပေးပါ"></textarea>
+
+      <button onclick="askAI()">✨ AI ကိုမေးမယ်</button>
+
+      <div class="result" id="result">
+        ဒီနေရာမှာ AI ရဲ့အဖြေ ပေါ်လာပါမယ်။
+      </div>
+
+      <div class="tools">
+        <div class="tool" onclick="setText('Facebook post တစ်ခုရေးပေးပါ')">
+          📱 Facebook Post
+        </div>
+
+        <div class="tool" onclick="setText('အလုပ်လျှောက်စာတစ်စောင်ရေးပေးပါ')">
+          💼 Job Application
+        </div>
+
+        <div class="tool" onclick="setText('ဒီစာကို English ဘာသာပြန်ပေးပါ')">
+          🌎 ဘာသာပြန်
+        </div>
+
+        <div class="tool" onclick="setText('CV တစ်စောင်ရေးဖို့ ကူညီပေးပါ')">
+          📄 CV Helper
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    function setText(text) {
+      document.getElementById("message").value = text;
+    }
+
+    function askAI() {
+      const message = document.getElementById("message").value.trim();
+      const result = document.getElementById("result");
+
+      if (!message) {
+        result.innerHTML = "⚠️ အရင်ဆုံး မေးချင်တာကို ရေးပါ။";
+        return;
+      }
+
+      result.innerHTML =
+        "⏳ AI ကို ချိတ်ဆက်နေပါတယ်...<br><br>" +
+        "💡 ဒီ Version က App ရဲ့ ပထမဆုံး Demo ဖြစ်ပါတယ်။ " +
+        "နောက်အဆင့်မှာ တကယ် AI အဖြေထုတ်နိုင်အောင် API ချိတ်ပေးမယ်။";
+    }
+  </script>
+
+</body>
+</html>
